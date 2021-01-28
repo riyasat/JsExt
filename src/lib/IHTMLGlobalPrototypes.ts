@@ -7,7 +7,6 @@ interface IPosProps {
 }
 declare global {
   interface HTMLElement {
-    (selector: string): HTMLElement | null;
     /**@param className can have multiple classes with spaces in between e.g btn btn-success */
     addClass(className: string): void;
     /**@param className can have multiple classes with spaces in between e.g btn btn-success */
@@ -91,6 +90,8 @@ declare global {
     height(height?: number | string): number | string | null;
     /** Returns all sblings of selected HTML element**/
     siblings(): HTMLElement | Element[] | null;
+    /**@param eventName @param handler attaches a one time event to selected HTML element**/
+    one(eventName: string, handler: EventHandlerNonNull): void;
     /**@param eventName @param handler attaches a custom event to selected HTML element**/
     on(eventName: string, handler: EventHandlerNonNull): void;
     /**@param eventName @param handler removes an event to selected HTML element**/
@@ -98,7 +99,7 @@ declare global {
     trigger(eventName: string, data?: any): void;
     extend(objA: any, objB: any): void;
     inArray(item: any, array: any[]): boolean;
-    isArray(obj: any): boolean;
+    isArray(): boolean;
     now(): Date;
     parseHTML(str: string): HTMLCollection;
     parseJSON(str: string): object;
@@ -106,6 +107,7 @@ declare global {
   interface Document {
     /**@param selector You can provide HTML Element id, name, class or TagName e.g. #id,name,.classname or body */
     getElement(selector: string): HTMLElement | null;
+    getElements(selector: string): NodeListOf<HTMLElement> | null;
     ready(fn: EventListener | EventListenerObject): void;
   }
   interface String {

@@ -262,17 +262,28 @@ import "./IHTMLGlobalPrototypes";
       }
     );
   };
+  HTMLElement.prototype.one = function (
+    eventName: string,
+    handler: EventHandlerNonNull
+  ) {
+    const handleOneTime = (e: any) => {
+      handler(e);
+      this.off(eventName, handleOneTime);
+    };
+    this.on(eventName, handleOneTime);
+  };
   HTMLElement.prototype.on = function (
     eventName: string,
     handler: EventHandlerNonNull
   ) {
-    this.addEventListener(eventName, handler, false);
+    this.addEventListener(eventName, handler, true);
   };
   HTMLElement.prototype.off = function (
     eventName: string,
     handler: EventHandlerNonNull
   ) {
-    this.removeEventListener(eventName, handler);
+    this.removeEventListener(eventName, handler, false);
+    this.removeEventListener(eventName, handler, true);
   };
 
   HTMLElement.prototype.trigger = function (eventName: string, data?: any) {
@@ -291,8 +302,8 @@ import "./IHTMLGlobalPrototypes";
   HTMLElement.prototype.inArray = function (item: any, array: any[]) {
     return array.indexOf(item) >= 0;
   };
-  HTMLElement.prototype.isArray = function (obj: any) {
-    return Array.isArray(obj);
+  HTMLElement.prototype.isArray = function () {
+    return Array.isArray(this);
   };
   HTMLElement.prototype.now = function () {
     return new Date();
@@ -313,11 +324,15 @@ import "./IHTMLGlobalPrototypes";
   Document.prototype.getElement = function (selector: string) {
     return document.querySelector(selector) as HTMLElement;
   };
+  Document.prototype.getElements = function (selector: string) {
+    return document.querySelectorAll<HTMLElement>(selector);
+  };
   Document.prototype.ready = function (
     fn: EventListener | EventListenerObject
   ) {
     document.addEventListener("DOMContentLoaded", fn);
   };
+
   // eslint-disable-next-line no-extend-native
   String.prototype.capitalize = function (): string {
     return this.charAt(0).toUpperCase() + this.slice(1);

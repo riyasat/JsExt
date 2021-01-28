@@ -1,5 +1,5 @@
 {
-  "name": "jsext",
+  "name": "@riyasat/extended-js",
   "version": "1.0.0",
   "description": "This library will extends JavaScript with JQuery Methods, You do not need to install JQuery for that. Most common methods of JQuery will be available as native methods on HTML Elements",
   "main": "dist/index.js",
