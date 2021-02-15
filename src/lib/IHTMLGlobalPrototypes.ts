@@ -1,10 +1,6 @@
+import { IAnimations, IPosProps } from "./CommonInterfaces";
+
 export {};
-interface IPosProps {
-  top?: number;
-  bottom?: number;
-  left?: number;
-  right?: number;
-}
 declare global {
   interface HTMLElement {
     /**@param className can have multiple classes with spaces in between e.g btn btn-success */
@@ -21,6 +17,8 @@ declare global {
     removeElement(element: HTMLElement): void;
     /**@param selector You can provide HTML Element id, name, class or TagName e.g. #id,name,.classname or body */
     getElement(selector: string): HTMLElement | null;
+    /**@param selector You can provide HTML Element id, name, class or TagName e.g. #id,name,.classname or body */
+    getElements(selector: string): NodeListOf<HTMLElement> | null;
     /**Provides previous element of referenced HTML element*/
     prev(): HTMLElement | null;
     /**Provides next element of referenced HTML element*/
@@ -86,6 +84,7 @@ declare global {
     replaceWith(str: string): HTMLElement | null;
     /**@param el swap selected HTML element with provided HTML element**/
     //swap(el: HTMLElement): HTMLElement | null;
+    animation(anim: IAnimations[]): HTMLElement | null;
     /** Returns height of selected HTML element**/
     height(height?: number | string): number | string | null;
     /** Returns all sblings of selected HTML element**/
@@ -97,6 +96,16 @@ declare global {
     /**@param eventName @param handler removes an event to selected HTML element**/
     off(eventName: string, handler: EventHandlerNonNull): void;
     trigger(eventName: string, data?: any): void;
+    extend(objA: any, objB: any): void;
+    inArray(item: any, array: any[]): boolean;
+    isArray(): boolean;
+    /**@param key must be in camleCase @param value Sets or Gets data set from the element **/
+    data(key: string, value?: any): any;
+    now(): Date;
+    parseHTML(str: string): HTMLCollection;
+    parseJSON(str: string): object;
+  }
+  interface Object {
     extend(objA: any, objB: any): void;
     inArray(item: any, array: any[]): boolean;
     isArray(): boolean;

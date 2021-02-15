@@ -37,7 +37,10 @@ import "./IHTMLGlobalPrototypes";
     element.remove();
   };
   HTMLElement.prototype.getElement = function (selector: string) {
-    return document.querySelector(selector);
+    return this.querySelector(selector);
+  };
+  HTMLElement.prototype.getElements = function (selector: string) {
+    return this.querySelectorAll<HTMLElement>(selector);
   };
   HTMLElement.prototype.prev = function () {
     return this.previousElementSibling as HTMLElement;
@@ -250,7 +253,7 @@ import "./IHTMLGlobalPrototypes";
         this.setAttribute("height", height);
       }
     }
-    return this.height();
+    return this.offsetHeight;
   };
   HTMLElement.prototype.siblings = function () {
     var _this = this;
@@ -276,14 +279,20 @@ import "./IHTMLGlobalPrototypes";
     eventName: string,
     handler: EventHandlerNonNull
   ) {
-    this.addEventListener(eventName, handler, true);
+    let events = eventName.split(" ");
+    events.forEach((evntName: any) => {
+      this.addEventListener(evntName, handler, true);
+    });
   };
   HTMLElement.prototype.off = function (
     eventName: string,
     handler: EventHandlerNonNull
   ) {
-    this.removeEventListener(eventName, handler, false);
-    this.removeEventListener(eventName, handler, true);
+    let events = eventName.split(" ");
+    events.forEach((evntName: any) => {
+      this.removeEventListener(evntName, handler, false);
+      this.removeEventListener(evntName, handler, true);
+    });
   };
 
   HTMLElement.prototype.trigger = function (eventName: string, data?: any) {
@@ -320,7 +329,12 @@ import "./IHTMLGlobalPrototypes";
   HTMLElement.prototype.parseJSON = function (str: string) {
     return JSON.parse(str);
   };
-
+  HTMLElement.prototype.data = function (key: string, value?: any) {
+    if (value) {
+      this.dataset[key] = value;
+    }
+    return this.dataset[key];
+  };
   Document.prototype.getElement = function (selector: string) {
     return document.querySelector(selector) as HTMLElement;
   };
@@ -332,7 +346,6 @@ import "./IHTMLGlobalPrototypes";
   ) {
     document.addEventListener("DOMContentLoaded", fn);
   };
-
   // eslint-disable-next-line no-extend-native
   String.prototype.capitalize = function (): string {
     return this.charAt(0).toUpperCase() + this.slice(1);
